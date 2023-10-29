@@ -1,36 +1,39 @@
 {
   "name": "@vscode/vscode-languagedetection",
   "version": "0.0.1",
+  "private": "false",
   "description": "An npm package that uses guesslang's ML model to detect source code languages",
-  "main": "dist/lib/index.js",
-  "bin": {
-    "vscode-languagedetection": "cli/index.js"
-  },
-  "module": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
-  "scripts": {
-    "pretest": "npm run clean && tsc --build ./test",
-    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts",
-    "prepack": "npm run compile",
-    "clean": "rimraf dist",
-    "watch": "npm run clean && webpack --watch",
-    "test": "mocha --recursive dist/test/**/*.test.js",
-    "compile": "npm run clean && webpack --mode production"
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
   },
+  "license": "MIT",
   "author": {
     "name": "Nikola Hristov",
     "email": "nikola@nikolahristov.tech",
     "url": "https://nikolahristov.tech"
   },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  "publisher": "playform",
+  "type": "module",
+  "main": "dist/lib/index.js",
+  "module": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "bin": {
+    "vscode-languagedetection": "cli/index.js"
   },
-  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "scripts": {
+    "pretest": "npm run clean && tsc --build ./test",
+    "test": "mocha --recursive dist/test/**/*.test.js",
+    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts",
+    "prepack": "npm run compile",
+    "clean": "rimraf dist",
+    "watch": "npm run clean && webpack --watch",
+    "compile": "npm run clean && webpack --mode production"
+  },
   "devDependencies": {
     "@tensorflow/tfjs-backend-cpu": "4.12.0",
     "@tensorflow/tfjs-converter": "4.12.0",
@@ -47,12 +50,10 @@
     "terser-webpack-plugin": "5.3.9",
     "ts-loader": "9.5.0",
     "typescript": "5.2.2",
+    "typescript-esbuild": "0.3.1",
     "webpack": "~5.89.0",
-    "webpack-cli": "5.1.4",
-    "typescript-esbuild": "0.3.1"
+    "webpack-cli": "5.1.4"
   },
-  "type": "module",
-  "private": "false",
   "publishConfig": {
     "access": "public"
   }
