@@ -1,6 +1,6 @@
 {
   "name": "@vscode/vscode-languagedetection",
-  "version": "1.0.22",
+  "version": "0.0.1",
   "description": "An npm package that uses guesslang's ML model to detect source code languages",
   "main": "dist/lib/index.js",
   "bin": {
@@ -10,7 +10,7 @@
   "types": "dist/lib/index.d.ts",
   "scripts": {
     "pretest": "npm run clean && tsc --build ./test",
-    "prepublishOnly": "npm test && npm run compile",
+    "prepublishOnly": "TypeScriptESBuild Source/**/*.ts",
     "prepack": "npm run compile",
     "clean": "rimraf dist",
     "watch": "npm run clean && webpack --watch",
@@ -19,14 +19,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/vscode-languagedetection.git"
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
   },
-  "author": "Tyler Leonhardt",
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/microsoft/vscode-languagedetection/issues"
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
   },
-  "homepage": "https://github.com/microsoft/vscode-languagedetection#readme",
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
   "devDependencies": {
     "@tensorflow/tfjs-backend-cpu": "4.12.0",
     "@tensorflow/tfjs-converter": "4.12.0",
@@ -44,6 +48,12 @@
     "ts-loader": "9.5.0",
     "typescript": "5.2.2",
     "webpack": "~5.89.0",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "5.1.4",
+    "typescript-esbuild": "0.3.1"
+  },
+  "type": "module",
+  "private": "false",
+  "publishConfig": {
+    "access": "public"
   }
 }
