@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
+const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = function (env, argv) {
-	const mode = argv.mode || 'none';
+	const mode = argv.mode || "none";
 	return {
 		entry: {
-			'index': './lib/index.ts'
+			"index": "./lib/index.ts",
 		},
 		mode: mode,
-		target: 'node',
-		devtool: 'source-map',
+		target: "node",
+		devtool: "source-map",
 		output: {
-			filename: '[name].js',
-			path: path.resolve(__dirname, 'dist', 'lib'),
+			filename: "[name].js",
+			path: path.resolve(__dirname, "dist", "lib"),
 			library: {
-				name: 'vscode-languagedetection',
-				type: 'umd',
+				name: "vscode-languagedetection",
+				type: "umd",
 			},
-			globalObject: 'this'
+			globalObject: "this",
 		},
 		optimization: {
 			minimizer: [
@@ -27,10 +27,10 @@ module.exports = function (env, argv) {
 					parallel: true,
 					terserOptions: {
 						ecma: 6,
-						compress: mode === 'production',
-						mangle: mode === 'production',
+						compress: mode === "production",
+						mangle: mode === "production",
 						output: {
-							beautify: mode !== 'production',
+							beautify: mode !== "production",
 							comments: false,
 							ecma: 6,
 						},
@@ -43,7 +43,7 @@ module.exports = function (env, argv) {
 				{
 					test: /\.tsx?$/,
 					use: {
-						loader: 'ts-loader',
+						loader: "ts-loader",
 						options: {
 							experimentalWatchApi: true,
 						},
@@ -53,13 +53,20 @@ module.exports = function (env, argv) {
 			],
 		},
 		resolve: {
-			extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+			extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
 			alias: {
-				'@tensorflow/tfjs': path.resolve(__dirname, 'node_modules', '@tensorflow', 'tfjs', 'dist', 'tf.es2017.js'),
+				"@tensorflow/tfjs": path.resolve(
+					__dirname,
+					"node_modules",
+					"@tensorflow",
+					"tfjs",
+					"dist",
+					"tf.es2017.js"
+				),
 			},
 		},
 		stats: {
-			preset: 'errors-warnings',
+			preset: "errors-warnings",
 			assets: true,
 			colors: true,
 			env: true,
