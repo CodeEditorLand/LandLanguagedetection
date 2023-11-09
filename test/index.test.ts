@@ -14,7 +14,7 @@ async function arrayify(generator: Generator<string, any, unknown>) {
 }
 
 // Similar to the heuristic used in VS Code:
-function* runVSCodeHeuristic(modelResults: ModelResult[]) {
+function * runVSCodeHeuristic(modelResults: ModelResult[]) {
 	if (!modelResults) {
 		return;
 	}
@@ -26,16 +26,14 @@ function* runVSCodeHeuristic(modelResults: ModelResult[]) {
 	const possibleLanguages: ModelResult[] = [modelResults[0]];
 
 	for (let current of modelResults) {
+
 		if (current === modelResults[0]) {
 			continue;
 		}
 
 		const currentHighest = possibleLanguages[possibleLanguages.length - 1];
 
-		if (
-			currentHighest.confidence - current.confidence >=
-			expectedRelativeConfidence
-		) {
+		if (currentHighest.confidence - current.confidence >= expectedRelativeConfidence) {
 			while (possibleLanguages.length) {
 				yield possibleLanguages.shift()!.languageId;
 			}
@@ -51,16 +49,10 @@ function* runVSCodeHeuristic(modelResults: ModelResult[]) {
 			}
 
 			// Handle languages that are close enough to each other
-			if (
-				(currentHighest.languageId === "ts" &&
-					current.languageId === "js") ||
-				(currentHighest.languageId === "js" &&
-					current.languageId === "ts") ||
-				(currentHighest.languageId === "c" &&
-					current.languageId === "cpp") ||
-				(currentHighest.languageId === "cpp" &&
-					current.languageId === "c")
-			) {
+			if ((currentHighest.languageId === 'ts' && current.languageId === 'js')
+				|| (currentHighest.languageId === 'js' && current.languageId === 'ts')
+				|| (currentHighest.languageId === 'c' && current.languageId === 'cpp')
+				|| (currentHighest.languageId === 'cpp' && current.languageId === 'c')) {
 				continue;
 			}
 
@@ -69,10 +61,10 @@ function* runVSCodeHeuristic(modelResults: ModelResult[]) {
 	}
 }
 
-describe("describe", () => {
+describe('describe', () => {
 	const modulOperations = new ModelOperations();
-
-	it("test TypeScript", async () => {
+	
+	it('test TypeScript', async () => {
 		const result = await modulOperations.runModel(`
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -88,15 +80,15 @@ async function bootstrap() {
 bootstrap();
 `);
 
-		expect(result[0].languageId).to.equal("ts");
+		expect(result[0].languageId).to.equal('ts');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 
 		const langs: string[] = await arrayify(runVSCodeHeuristic(result));
 		expect(langs.length).to.equal(1);
-		expect(langs[0]).to.equal("ts");
+		expect(langs[0]).to.equal('ts');
 	});
 
-	it("test Python", async () => {
+	it('test Python', async () => {
 		const result = await modulOperations.runModel(`
 		# Python program to check if the input number is odd or even.
 		# A number is even if division by 2 gives a remainder of 0.
@@ -108,14 +100,14 @@ bootstrap();
 		else:
 			print("{0} is Odd".format(num))
 `);
-		expect(result[0].languageId).to.equal("py");
+		expect(result[0].languageId).to.equal('py');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 		const langs: string[] = await arrayify(runVSCodeHeuristic(result));
 		expect(langs.length).to.equal(1);
-		expect(langs[0]).to.equal("py");
+		expect(langs[0]).to.equal('py');
 	});
 
-	it("test Java", async () => {
+	it('test Java', async () => {
 		const result = await modulOperations.runModel(`
 public class Main {
 
@@ -137,14 +129,14 @@ public class Main {
 	}
 }
 `);
-		expect(result[0].languageId).to.equal("java");
+		expect(result[0].languageId).to.equal('java');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 		const langs: string[] = await arrayify(runVSCodeHeuristic(result));
 		expect(langs.length).to.equal(1);
-		expect(langs[0]).to.equal("java");
+		expect(langs[0]).to.equal('java');
 	});
 
-	it("test PowerShell", async () => {
+	it('test PowerShell', async () => {
 		const result = await modulOperations.runModel(`
 $msedgedriverPath = 'C:\\Users\\Tyler\\Downloads\\edgedriver_win64\\msedgedriver.exe'
 
@@ -167,29 +159,25 @@ while($true) {
 	Start-Sleep -Seconds 2
 }
 `);
-		expect(result[0].languageId).to.equal("ps1");
+		expect(result[0].languageId).to.equal('ps1');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 		const langs: string[] = await arrayify(runVSCodeHeuristic(result));
 		expect(langs.length).to.equal(1);
-		expect(langs[0]).to.equal("ps1");
+		expect(langs[0]).to.equal('ps1');
 	});
 
-	it("test large file", async () => {
-		const result = await modulOperations.runModel(
-			readFileSync(
-				path.resolve(__dirname, "..", "..", "test", "large.ts.txt")
-			).toString()
-		);
+	it('test large file', async () => {
+		const result = await modulOperations.runModel(readFileSync(path.resolve(__dirname, '..', '..', 'test', 'large.ts.txt')).toString());
 
-		expect(result[0].languageId).to.equal("ts");
+		expect(result[0].languageId).to.equal('ts');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 
 		const langs: string[] = await arrayify(runVSCodeHeuristic(result));
 		expect(langs.length).to.equal(1);
-		expect(langs[0]).to.equal("ts");
+		expect(langs[0]).to.equal('ts');
 	});
 
-	it("test Visual Basic", async () => {
+	it('test Visual Basic', async () => {
 		const result = await modulOperations.runModel(`
 Module Module1
 
@@ -213,22 +201,21 @@ End Sub
 End Module
 `);
 
-		expect(result[0].languageId).to.equal("vba");
+		expect(result[0].languageId).to.equal('vba');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 
 		for await (const lang of runVSCodeHeuristic(result)) {
-			expect(lang).to.equal("vba");
+			expect(lang).to.equal('vba');
 		}
 	});
 
-	it("test results with carriage returns", async () => {
-		const result = await modulOperations.runModel(
-			`public class Reverse {\r\n\r\n  public static void main(String[] args) {\r\n    String sentence = "Go work";\r\n    String reversed = reverse(sentence);\r\n    System.out.println("The reversed sentence is: " + reversed);\r\n  }\r\n\r\n  public static String reverse(String sentence) {\r\n    if (sentence.isEmpty())\r\n      return sentence;\r\n\r\n    return reverse(sentence.substring(1)) + sentence.charAt(0);\r\n  }\r\n}`
-		);
-		expect(result[0].languageId).to.equal("java");
+	it('test results with carriage returns', async () => {
+		const result = await modulOperations.runModel(`public class Reverse {\r\n\r\n  public static void main(String[] args) {\r\n    String sentence = "Go work";\r\n    String reversed = reverse(sentence);\r\n    System.out.println("The reversed sentence is: " + reversed);\r\n  }\r\n\r\n  public static String reverse(String sentence) {\r\n    if (sentence.isEmpty())\r\n      return sentence;\r\n\r\n    return reverse(sentence.substring(1)) + sentence.charAt(0);\r\n  }\r\n}`);
+		expect(result[0].languageId).to.equal('java');
 		expect(result[0].confidence).to.greaterThan(expectedRelativeConfidence);
 		const langs: string[] = await arrayify(runVSCodeHeuristic(result));
 		expect(langs.length).to.equal(1);
-		expect(langs[0]).to.equal("java");
+		expect(langs[0]).to.equal('java');
 	});
+
 });

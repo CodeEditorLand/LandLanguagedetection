@@ -4,5 +4,7 @@
 		"declaration": false,
 		"outDir": "../dist"
 	},
-	"include": ["**/*.ts"]
+	"include": [
+		"**/*.ts"
+	]
 }
