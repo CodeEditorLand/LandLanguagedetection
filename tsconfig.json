@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-        "module": "CommonJS",
+		"module": "CommonJS",
 		"moduleResolution": "node",
 		"noEmitOnError": false,
 		"strict": true,
@@ -14,7 +14,5 @@
 		"declaration": true,
 		"outDir": "dist/lib"
 	},
-	"include": [
-		"lib/**/*.ts"
-	]
+	"include": ["lib/**/*.ts"]
 }
