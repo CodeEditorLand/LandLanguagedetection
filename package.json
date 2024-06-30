@@ -1,8 +1,18 @@
 {
+	"name": "@vscode/vscode-languagedetection",
+	"description": "An npm package that uses guesslang's ML model to detect source code languages",
+	"main": "dist/lib/index.js",
+	"module": "dist/lib/index.js",
+	"types": "dist/lib/index.d.ts",
 	"bin": {
 		"vscode-languagedetection": "cli/index.js"
 	},
-	"description": "An npm package that uses guesslang's ML model to detect source code languages",
+	"scripts": {
+		"clean": "rimraf dist",
+		"compile": "npm run clean && webpack --mode production",
+		"prepack": "npm run compile",
+		"prepublishOnly": "npm test && npm run compile"
+	},
 	"devDependencies": {
 		"@tensorflow/tfjs-backend-cpu": "4.20.0",
 		"@tensorflow/tfjs-converter": "4.20.0",
@@ -14,15 +24,5 @@
 		"npm-run-all": "4.1.5",
 		"rimraf": "5.0.7",
 		"ts-loader": "9.5.1"
-	},
-	"main": "dist/lib/index.js",
-	"module": "dist/lib/index.js",
-	"name": "@vscode/vscode-languagedetection",
-	"scripts": {
-		"clean": "rimraf dist",
-		"compile": "npm run clean && webpack --mode production",
-		"prepack": "npm run compile",
-		"prepublishOnly": "npm test && npm run compile"
-	},
-	"types": "dist/lib/index.d.ts"
+	}
 }
