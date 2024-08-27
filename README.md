@@ -4,7 +4,7 @@ An npm package that uses machine learning to detect source code languages.
 Powered by [@yoeo](https://github.com/yoeo)'s
 [guesslang](https://github.com/yoeo/guesslang) model!
 
-## Usage
+## 🛠️ Usage
 
 First install it in your project:
 
