@@ -1,0 +1,9 @@
+dist/test
+test
+.vscode
+lib
+tsconfig.json
+vscode-vscode-languagedetection-*.tgz
+webpack.config.js
+**/*.map
+build/
