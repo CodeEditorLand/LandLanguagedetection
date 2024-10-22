@@ -4,9 +4,9 @@
 	},
 	"description": "An npm package that uses guesslang's ML model to detect source code languages",
 	"devDependencies": {
-		"@tensorflow/tfjs-backend-cpu": "4.21.0",
-		"@tensorflow/tfjs-converter": "4.21.0",
-		"@tensorflow/tfjs-core": "4.21.0",
+		"@tensorflow/tfjs-backend-cpu": "4.22.0",
+		"@tensorflow/tfjs-converter": "4.22.0",
+		"@tensorflow/tfjs-core": "4.22.0",
 		"@types/chai": "5.0.0",
 		"@types/node": "22.7.7",
 		"chai": "5.1.1",
