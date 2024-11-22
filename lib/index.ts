@@ -24,7 +24,9 @@ class InMemoryIOHandler implements io.IOHandler {
 	async load(): Promise<io.ModelArtifacts> {
 		// We do not allow both modelTopology and weightsManifest to be missing.
 		const modelTopology = this.modelJSON.modelTopology;
+
 		const weightsManifest = this.modelJSON.weightsManifest;
+
 		if (modelTopology === null && weightsManifest === null) {
 			throw new Error(
 				`The model contains neither model topology or manifest for weights.`,
@@ -82,6 +84,7 @@ class InMemoryIOHandler implements io.IOHandler {
 		weightsManifest: io.WeightsManifestConfig,
 	): Promise<[io.WeightsManifestEntry[], ArrayBuffer]> {
 		const weightSpecs = [];
+
 		for (const entry of weightsManifest) {
 			weightSpecs.push(...entry.weights);
 		}
@@ -105,6 +108,7 @@ export class ModelOperations {
 	private static NODE_MODEL_JSON_FUNC: () => Promise<{ [key: string]: any }> =
 		async () => {
 			const fs = await import("fs");
+
 			const path = await import("path");
 
 			return new Promise<any>((resolve, reject) => {
@@ -113,6 +117,7 @@ export class ModelOperations {
 					(err, data) => {
 						if (err) {
 							reject(err);
+
 							return;
 						}
 						resolve(JSON.parse(data.toString()));
@@ -123,6 +128,7 @@ export class ModelOperations {
 
 	private static NODE_WEIGHTS_FUNC: () => Promise<ArrayBuffer> = async () => {
 		const fs = await import("fs");
+
 		const path = await import("path");
 
 		return new Promise<ArrayBuffer>((resolve, reject) => {
@@ -137,6 +143,7 @@ export class ModelOperations {
 				(err, data) => {
 					if (err) {
 						reject(err);
+
 						return;
 					}
 					resolve(data.buffer);
@@ -179,6 +186,7 @@ export class ModelOperations {
 
 		// TODO: validate model.json
 		this._modelJson = (await this._modelJsonLoaderFunc()) as io.ModelJSON;
+
 		return this._modelJson;
 	}
 
@@ -189,6 +197,7 @@ export class ModelOperations {
 
 		// TODO: validate weights
 		this._weights = await this._weightsLoaderFunc();
+
 		return this._weights;
 	}
 
@@ -208,6 +217,7 @@ export class ModelOperations {
 		}
 
 		const resolvedModelJSON = await this.getModelJSON();
+
 		const resolvedWeights = await this.getWeights();
 		this._model = await loadGraphModel(
 			new InMemoryIOHandler(resolvedModelJSON, resolvedWeights),
@@ -233,16 +243,21 @@ export class ModelOperations {
 
 		// call out to the model
 		const predicted = await this._model!.executeAsync(tensor([content]));
+
 		const probabilitiesTensor: Tensor<Rank> = Array.isArray(predicted)
 			? predicted[0]!
 			: predicted;
+
 		const languageTensor: Tensor<Rank> = Array.isArray(predicted)
 			? predicted[1]!
 			: predicted;
+
 		const probabilities = probabilitiesTensor.dataSync() as Float32Array;
+
 		const langs: Array<string> = languageTensor.dataSync() as any;
 
 		const objs: Array<ModelResult> = [];
+
 		for (let i = 0; i < langs.length; i++) {
 			objs.push({
 				languageId: langs[i],
@@ -251,6 +266,7 @@ export class ModelOperations {
 		}
 
 		let maxIndex = 0;
+
 		for (let i = 0; i < probabilities.length; i++) {
 			if (probabilities[i] > probabilities[maxIndex]) {
 				maxIndex = i;
