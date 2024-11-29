@@ -12,6 +12,7 @@ import "@tensorflow/tfjs-backend-cpu";
 
 export interface ModelResult {
 	languageId: string;
+
 	confidence: number;
 }
 
@@ -60,19 +61,25 @@ class InMemoryIOHandler implements io.IOHandler {
 		if (modelJSON.trainingConfig !== null) {
 			modelArtifacts.trainingConfig = modelJSON.trainingConfig;
 		}
+
 		if (modelJSON.weightsManifest !== null) {
 			const [weightSpecs, weightData] = await loadWeights(
 				modelJSON.weightsManifest,
 			);
+
 			modelArtifacts.weightSpecs = weightSpecs;
+
 			modelArtifacts.weightData = weightData;
 		}
+
 		if (modelJSON.signature !== null) {
 			modelArtifacts.signature = modelJSON.signature;
 		}
+
 		if (modelJSON.userDefinedMetadata !== null) {
 			modelArtifacts.userDefinedMetadata = modelJSON.userDefinedMetadata;
 		}
+
 		if (modelJSON.modelInitializer !== null) {
 			modelArtifacts.modelInitializer = modelJSON.modelInitializer;
 		}
@@ -95,14 +102,19 @@ class InMemoryIOHandler implements io.IOHandler {
 
 export interface ModelOperationsOptions {
 	modelJsonLoaderFunc?: () => Promise<{ [key: string]: any }>;
+
 	weightsLoaderFunc?: () => Promise<ArrayBuffer>;
+
 	minContentSize?: number;
+
 	maxContentSize?: number;
+
 	normalizeNewline?: boolean;
 }
 
 export class ModelOperations {
 	private static DEFAULT_MAX_CONTENT_SIZE = 100000;
+
 	private static DEFAULT_MIN_CONTENT_SIZE = 20;
 
 	private static NODE_MODEL_JSON_FUNC: () => Promise<{ [key: string]: any }> =
@@ -120,6 +132,7 @@ export class ModelOperations {
 
 							return;
 						}
+
 						resolve(JSON.parse(data.toString()));
 					},
 				);
@@ -146,6 +159,7 @@ export class ModelOperations {
 
 						return;
 					}
+
 					resolve(data.buffer);
 				},
 			);
@@ -153,29 +167,40 @@ export class ModelOperations {
 	};
 
 	private _model: GraphModel | undefined;
+
 	private _modelJson: io.ModelJSON | undefined;
+
 	private _weights: ArrayBuffer | undefined;
+
 	private readonly _minContentSize: number;
+
 	private readonly _maxContentSize: number;
+
 	private readonly _modelJsonLoaderFunc: () => Promise<{
 		[key: string]: any;
 	}>;
+
 	private readonly _weightsLoaderFunc: () => Promise<ArrayBuffer>;
+
 	private readonly _normalizeNewline: boolean;
 
 	constructor(modelOptions?: ModelOperationsOptions) {
 		this._modelJsonLoaderFunc =
 			modelOptions?.modelJsonLoaderFunc ??
 			ModelOperations.NODE_MODEL_JSON_FUNC;
+
 		this._weightsLoaderFunc =
 			modelOptions?.weightsLoaderFunc ??
 			ModelOperations.NODE_WEIGHTS_FUNC;
+
 		this._minContentSize =
 			modelOptions?.minContentSize ??
 			ModelOperations.DEFAULT_MIN_CONTENT_SIZE;
+
 		this._maxContentSize =
 			modelOptions?.maxContentSize ??
 			ModelOperations.DEFAULT_MAX_CONTENT_SIZE;
+
 		this._normalizeNewline = modelOptions?.normalizeNewline ?? true;
 	}
 
@@ -209,7 +234,9 @@ export class ModelOperations {
 		// These 2 env set's just suppress some warnings that get logged that
 		// are not applicable for this use case.
 		const tfEnv = env();
+
 		tfEnv.set("IS_NODE", false);
+
 		tfEnv.set("PROD", true);
 
 		if (!(await setBackend("cpu"))) {
@@ -219,6 +246,7 @@ export class ModelOperations {
 		const resolvedModelJSON = await this.getModelJSON();
 
 		const resolvedWeights = await this.getWeights();
+
 		this._model = await loadGraphModel(
 			new InMemoryIOHandler(resolvedModelJSON, resolvedWeights),
 		);
