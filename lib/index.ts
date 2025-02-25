@@ -119,9 +119,9 @@ export class ModelOperations {
 
 	private static NODE_MODEL_JSON_FUNC: () => Promise<{ [key: string]: any }> =
 		async () => {
-			const fs = await import("fs");
+			const fs = await import("node:fs");
 
-			const path = await import("path");
+			const path = await import("node:path");
 
 			return new Promise<any>((resolve, reject) => {
 				fs.readFile(
@@ -140,9 +140,9 @@ export class ModelOperations {
 		};
 
 	private static NODE_WEIGHTS_FUNC: () => Promise<ArrayBuffer> = async () => {
-		const fs = await import("fs");
+		const fs = await import("node:fs");
 
-		const path = await import("path");
+		const path = await import("node:path");
 
 		return new Promise<ArrayBuffer>((resolve, reject) => {
 			fs.readFile(
